@@ -1,8 +1,14 @@
+import ErrorBoundary from '@/components/common/ErrorBoundary'
+import { AuthProvider } from '@/features/auth/AuthProvider'
+import AppRouter from '@/routes/AppRouter'
+
 function App() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <h1 className="text-2xl font-semibold">Frontend</h1>
-    </div>
+    <ErrorBoundary>
+      <AuthProvider>
+        <AppRouter />
+      </AuthProvider>
+    </ErrorBoundary>
   )
 }
 

@@ -1,8 +1,11 @@
+import AppRouter from '@/routes/AppRouter'
+import ErrorBoundary from '@/components/common/ErrorBoundary'
+
 function App() {
   return (
-    <div className="flex min-h-screen items-center justify-center">
-      <h1 className="text-2xl font-semibold">Frontend</h1>
-    </div>
+    <ErrorBoundary>
+      <AppRouter />
+    </ErrorBoundary>
   )
 }
 

@@ -1,5 +1,5 @@
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
-
+import WaitingRoomPage from '@/features/lobby/WaitingRoomPage'
 import AppLayout from '@/components/layout/AppLayout'
 import LoginPage from '@/features/auth/LoginPage'
 import RegisterPage from '@/features/auth/RegisterPage'
@@ -20,8 +20,8 @@ function AppRouter() {
 
           <Route element={<ProtectedRoute />}>
             <Route path="profile" element={<ProfilePage />} />
+            <Route path="lobby/:roomCode" element={<WaitingRoomPage />} />
           </Route>
-
           <Route path="*" element={<NotFoundPage />} />
         </Route>
       </Routes>

@@ -1,8 +1,8 @@
 import { fireEvent, render, screen } from '@testing-library/react'
 import { describe, expect, it, vi } from 'vitest'
 
-import WaitingRoomPanel from './WaitingRoomPanel'
-import type { WaitingRoomState } from './waitingRoomState'
+import WaitingRoomPanel from '@/features/lobby/WaitingRoomPanel'
+import type { WaitingRoomState } from '@/features/lobby/waitingRoomState'
 
 const waitingRoomState: WaitingRoomState = {
   hostId: 'host-1',

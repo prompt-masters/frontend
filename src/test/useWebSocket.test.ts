@@ -1,7 +1,7 @@
 import { act, renderHook } from '@testing-library/react'
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest'
 
-import useWebSocket from './useWebSocket'
+import useWebSocket from '@/websocket/useWebSocket'
 
 class MockWebSocket {
   static OPEN = 1

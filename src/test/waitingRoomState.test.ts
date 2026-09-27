@@ -7,7 +7,7 @@ import {
   setAuthoritativeGameState,
   updatePlayerReady,
   type WaitingRoomState,
-} from './waitingRoomState'
+} from '@/features/lobby/waitingRoomState'
 
 describe('waitingRoomState', () => {
   it('does not duplicate a player when the same player joins twice', () => {

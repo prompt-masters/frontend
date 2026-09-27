@@ -3,8 +3,8 @@ import { describe, expect, it } from 'vitest'
 import {
   reduceWaitingRoomEvent,
   type WaitingRoomEvent,
-} from './waitingRoomEvents'
-import type { WaitingRoomState } from './waitingRoomState'
+} from '@/features/lobby/waitingRoomEvents'
+import type { WaitingRoomState } from '@/features/lobby/waitingRoomState'
 
 const initialState: WaitingRoomState = {
   hostId: 'host-1',

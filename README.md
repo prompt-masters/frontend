@@ -1,33 +1,87 @@
-# React + TypeScript + Vite
+# PromptArena Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+React + TypeScript frontend for PromptArena.
 
-Currently, two official plugins are available:
+## Tech Stack
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+- React
+- TypeScript
+- Vite
+- Tailwind CSS
+- React Router
+- Vitest
+- Testing Library
 
-## React Compiler
+## Local Development
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Install dependencies:
 
-## Expanding the Oxlint configuration
+    npm install
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+Create a local environment file:
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
-```
+    cp .env.example .env
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
-# frontend
+Configure the backend API URL in `.env`:
+
+    VITE_API_BASE_URL=http://localhost:8080
+
+Start the frontend:
+
+    npm run dev
+
+The application runs at:
+
+    http://localhost:5173
+
+## Environment Configuration
+
+The backend URL is configured through:
+
+    VITE_API_BASE_URL
+
+Backend URLs must not be hard-coded in frontend source code.
+
+## Project Structure
+
+    src/
+    ├── api/
+    ├── app/
+    ├── components/
+    ├── features/
+    │   ├── auth/
+    │   ├── game/
+    │   ├── lobby/
+    │   ├── profile/
+    │   └── results/
+    ├── hooks/
+    ├── pages/
+    ├── routes/
+    ├── stores/
+    ├── websocket/
+    └── utils/
+
+## Code Quality
+
+Run all frontend checks:
+
+    npm run check
+
+Individual commands:
+
+    npm run format:check
+    npm run lint
+    npm run typecheck
+    npm run test
+    npm run build
+
+## API Client
+
+Shared API requests should use the client in `src/api/client.ts`.
+
+The client:
+
+- Uses `VITE_API_BASE_URL`
+- Adds the Bearer token when available
+- Centralizes unauthorized `401` handling
+- Provides a shared API error type

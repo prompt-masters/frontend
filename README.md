@@ -75,6 +75,17 @@ Individual commands:
     npm run test
     npm run build
 
+## CI
+
+`.github/workflows/frontend.yml` runs on pull requests into `dev` and `main`:
+`lint` (format check, ESLint, typecheck) → `test` → `build`, each only if the
+one before passed. A `changes` job skips them when the PR touches no frontend
+files (`src/`, `public/`, `index.html`, package and tool config).
+
+To block merging on failures, protect `dev` and `main` in *Settings →
+Branches* and require the `lint`, `test` and `build` checks. Skipped jobs
+count as passed, so a PR that changes nothing here is not blocked.
+
 ## API Client
 
 Shared API requests should use the client in `src/api/client.ts`.

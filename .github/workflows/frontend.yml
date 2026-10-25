@@ -1,0 +1,76 @@
+# Pull requests: lint -> test -> build, each only if the one before passed.
+# The jobs run only when the PR touches frontend files. The filter is a job
+# rather than an `on.paths` filter so that, with required status checks, a PR
+# that changes nothing here sees the jobs skipped (which passes) instead of a
+# check that never reports.
+name: Frontend
+
+on:
+  pull_request:
+    branches: [dev, main]
+
+concurrency:
+  group: frontend-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      frontend: ${{ steps.filter.outputs.frontend }}
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - id: filter
+        env:
+          BASE: ${{ github.event.pull_request.base.sha }}
+        run: |
+          pattern='^(src/|public/|index\.html$|package(-lock)?\.json$|tsconfig[^/]*\.json$|vite\.config\.ts$|vitest\.config\.ts$|eslint\.config\.js$|\.prettier(rc\.json|ignore)$|\.github/workflows/frontend\.yml$)'
+          if git diff --name-only "$BASE"...HEAD | grep -qE "$pattern"; then
+            echo "frontend=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "frontend=false" >> "$GITHUB_OUTPUT"
+          fi
+
+  lint:
+    needs: changes
+    if: needs.changes.outputs.frontend == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run format:check
+      - run: npm run lint
+      - run: npm run typecheck
+
+  test:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm test
+
+  build:
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run build

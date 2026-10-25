@@ -246,4 +246,37 @@ describe('RoundGameplayPanel', () => {
     expect(screen.getByRole('timer')).toHaveTextContent('00:00')
     expect(screen.getByLabelText('Prompt editor')).toBeDisabled()
   })
+
+  it('renders the helpers with the live draft and locks them with the editor', () => {
+    const renderHelpers = vi.fn(
+      ({ prompt, locked }: { prompt: string; locked: boolean }) => (
+        <p>
+          helpers: {prompt || 'empty'} / {locked ? 'locked' : 'open'}
+        </p>
+      ),
+    )
+
+    render(
+      <RoundGameplayPanel
+        round={{ ...activeRound, deadline: '2026-09-03T20:00:02.000Z' }}
+        output=""
+        isStreaming={false}
+        onTest={vi.fn()}
+        onSubmit={vi.fn()}
+        renderHelpers={renderHelpers}
+      />,
+    )
+
+    expect(screen.getByText('helpers: empty / open')).toBeInTheDocument()
+
+    fireEvent.change(screen.getByLabelText('Prompt editor'), {
+      target: { value: 'my draft' },
+    })
+    expect(screen.getByText('helpers: my draft / open')).toBeInTheDocument()
+
+    act(() => {
+      vi.advanceTimersByTime(2000)
+    })
+    expect(screen.getByText('helpers: my draft / locked')).toBeInTheDocument()
+  })
 })

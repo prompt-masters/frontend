@@ -1,4 +1,4 @@
-import { type FormEvent, useState } from 'react'
+import { type FormEvent, type ReactNode, useState } from 'react'
 
 import type { ActiveRound } from './types'
 import useServerDeadlineTimer from './useServerDeadlineTimer'
@@ -12,8 +12,8 @@ type RoundGameplayPanelProps = {
   onTest: (prompt: string) => void
   onSubmit: (prompt: string) => void
   onExpire?: () => void
-  onHint?: () => void
-  onReview?: () => void
+  // Renders the AI helpers with the live draft, e.g. a HelperPanel.
+  renderHelpers?: (draft: { prompt: string; locked: boolean }) => ReactNode
 }
 
 function RoundGameplayPanel({
@@ -25,8 +25,7 @@ function RoundGameplayPanel({
   onTest,
   onSubmit,
   onExpire,
-  onHint,
-  onReview,
+  renderHelpers,
 }: RoundGameplayPanelProps) {
   const [prompt, setPrompt] = useState(round.prompt)
 
@@ -179,6 +178,12 @@ function RoundGameplayPanel({
           </div>
         </form>
 
+        {renderHelpers && (
+          <div className="border-t border-slate-800 p-5">
+            {renderHelpers({ prompt, locked: editorLocked })}
+          </div>
+        )}
+
         <footer className="border-t border-slate-800 p-5">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <div className="flex gap-6 text-sm">
@@ -192,24 +197,6 @@ function RoundGameplayPanel({
             </div>
 
             <div className="flex flex-wrap gap-2">
-              <button
-                type="button"
-                onClick={onHint}
-                disabled={!onHint || editorLocked}
-                className="rounded-md border border-slate-700 px-4 py-2 text-sm hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                Hint
-              </button>
-
-              <button
-                type="button"
-                onClick={onReview}
-                disabled={!onReview || editorLocked}
-                className="rounded-md border border-slate-700 px-4 py-2 text-sm hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                Review
-              </button>
-
               <button
                 type="button"
                 onClick={handleSubmit}

@@ -82,8 +82,8 @@ Individual commands:
 one before passed. A `changes` job skips them when the PR touches no frontend
 files (`src/`, `public/`, `index.html`, package and tool config).
 
-To block merging on failures, protect `dev` and `main` in *Settings →
-Branches* and require the `lint`, `test` and `build` checks. Skipped jobs
+To block merging on failures, protect `dev` and `main` in _Settings →
+Branches_ and require the `lint`, `test` and `build` checks. Skipped jobs
 count as passed, so a PR that changes nothing here is not blocked.
 
 ## API Client
